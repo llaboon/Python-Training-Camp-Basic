@@ -6,7 +6,8 @@
 
 请补全下面的函数，实现文件的读取和写入功能。
 """
-
+import tempfile
+import os
 def read_file(file_path):
     """
     读取文本文件内容
@@ -19,6 +20,12 @@ def read_file(file_path):
     """
     # 请在下方编写代码
     # 使用open()函数打开文件并读取内容
+
+    f=open(file_path,'r',encoding='utf-8')
+    ret=f.read()
+    f.close()
+    print(ret)
+    return str(ret)
     pass
 
 def write_file(file_path, content):
@@ -34,4 +41,31 @@ def write_file(file_path, content):
     """
     # 请在下方编写代码
     # 使用with语句和open()函数写入内容到文件
-    pass 
+    f=open(file_path,"w",encoding='utf-8')
+    f.write(content)
+    f.close()
+    return True
+    pass
+
+
+fd, temp_path = tempfile.mkstemp(text=True)
+os.close(fd)
+
+# 使用UTF-8编码写入内容
+with open(temp_path, 'w', encoding='utf-8') as f:
+    f.write("这是一个测试文件内容\n第二行内容")
+
+try:
+    # 测试读取文件
+    content = read_file(temp_path)
+
+    # 验证内容
+    assert isinstance(content, str), "返回值应该是字符串"
+    assert "这是一个测试文件内容" in content, "返回的内容应该包含原始文件内容"
+    assert "第二行内容" in content, "返回的内容应该包含原始文件内容"
+finally:
+    # 删除临时文件
+    try:
+        os.unlink(temp_path)
+    except:
+        pass  # 忽略删除失败的错误

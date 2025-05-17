@@ -18,4 +18,4 @@ def sum_numbers(n):
     - 从1到n的所有整数之和
     """
     # 请在下方编写代码
-    pass 
+    return n*(n+1)/2
